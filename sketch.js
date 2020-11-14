@@ -1,9 +1,10 @@
+let canvas;
 const len = 784;
 const total_data = 1000;
 
-const CAT = 0;
-const TRAIN = 1;
-const RAINBOW = 2;
+const indexs = {'cat': 0, 'train': 1, 'rainbow': 2}
+let labels = {};
+//const labels = {indexs.cat: 'Cat', indexs['train']: 'Train', indexs['rainbow']: 'Rainbow'}
 
 var rainbows_url = "data/rainbows1000.npy";
 var cats_url = "data/cats1000.npy";
@@ -113,18 +114,7 @@ function guess(){
   var m = max(guess);
   var classification = guess.indexOf(m);
 
-  if (classification == CAT){
-    console.log("CAT");
-    guess = "Cat";
-  }
-  else if (classification == TRAIN){
-    console.log("TRAIN");
-    guess = "Train";
-  }
-  else if (classification == RAINBOW){
-    console.log("RAINBOW");
-    guess = "Rainbow";
-  }
+  if (labels[classification]) guess = labels[classification];
 
   if (m >= 0.5){
     percent_txt = "I'am sure It is an";
@@ -173,6 +163,7 @@ function speak(txt){
 
   window.speechSynthesis.speak(utter);
 }
+
 function array_elements(arr, target){
   for (let i = 0;i< arr.length;i++) {
     if (arr[i] != target){
@@ -182,17 +173,26 @@ function array_elements(arr, target){
   return true;
 }
 
+function setupLabels() {
+  for (let label of Object.keys(indexs)) {
+    let index = indexs[label];
+    labels[index] = label;
+  }
+}
+
 function setup(){
   speak("Hi");
-  var canvas = createCanvas(280, 280);
+
+  canvas = createCanvas(280, 280);
+  background(255);
   canvas.id("canvas");
   guess_txt = document.getElementById("guess-text");
   document.getElementById("main").appendChild(canvas.canvas);
-  background(255);
-  prepareData(cats, cats_data, CAT);
-  prepareData(trains, trains_data, TRAIN);
-  prepareData(rainbows, rainbows_data, RAINBOW);
+  prepareData(cats, cats_data, indexs['cat']);
+  prepareData(trains, trains_data, indexs['train']);
+  prepareData(rainbows, rainbows_data, indexs['rainbow']);
 
+  setupLabels();
   brain = new Brain(784, 64, 3);
 
   let all_training_data = [];
