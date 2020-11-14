@@ -1,0 +1,100 @@
+:root{
+--bleu: #4F4FFF;
+--orange: #FFDA36;
+}
+
+*{
+  font-family: 'Patrick Hand SC', cursive;
+}
+
+body, header, footer{
+margin: 0;
+padding: 0;
+background-color: #EFEFEF;
+font-size: 30px;
+}
+
+#main{
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+}
+
+button{
+zoom: 0;
+padding: 10px 30px;
+border-radius: 0;
+outline: none;
+border: 0;
+cursor: pointer;
+font-size: 20px;
+background-color: var(--bleu);
+color: white;
+margin: 0 10px;
+transition: 0.3s;
+user-select: none;
+}
+
+
+button:hover{
+zoom: 1.5;
+box-shadow: 10px 10px 0 0px #7c7cff,
+            20px 20px 0 0px #c3c3ff;
+}
+
+#control{
+order: 1;
+margin-top: 10px;
+}
+
+#canvas{
+order: -1;
+box-shadow: 15px 15px 0px #9797ff;
+margin: 50px 0;
+margin-top: 25px;
+}
+
+#guess-text{ 
+position: absolute;
+bottom: 5px;
+top: auto;
+font-weight: 100;
+user-select: none;
+width: 100%;
+text-align: center;
+}
+
+orangebg{
+background-color: var(--orange);
+color: white;
+padding: 0 10px;
+}
+@media only screen and (max-width: 736px) {
+*{
+margin: 0;
+padding: 0;
+}
+#control{
+display: flex;
+flex-direction: column;
+width: 100vw;
+}
+#control button{
+width: 100%;
+margin: 2px 0;
+}
+#control button:hover{
+zoom: 1;
+box-shadow: 0 0,
+            0 0;
+}
+
+#guess-text{ 
+position: absolute;
+bottom: auto;
+top: 130px;
+font-size: 20px;
+}
+
+}
