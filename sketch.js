@@ -2,26 +2,30 @@ let canvas;
 const len = 784;
 const total_data = 1000;
 
-const indexs = {'cat': 0, 'train': 1, 'rainbow': 2}
+const indexs = {'cats': 0, 'trains': 1, 'rainbows': 2}
 let labels = {};
 
 var all_training_data = [], all_testing_data = [], epoch = 0;
 var train_btn, test_btn, guess_btn, clear_btn;
 
-var rainbows_url = "data/rainbows1000.npy";
-var cats_url = "data/cats1000.npy";
-var trains_url = "data/trains1000.npy";
-var rainbows, cats, trains;
-var rainbows = {}, cats = {}, trains = {};
+const models_urls = {
+  rainbows: 'data/rainbows1000.npy',
+  cats: 'data/cats1000.npy',
+  trains: 'data/trains1000.npy'
+}
+const models = {}
 var brain;
 
 var guess_txt;
 let percent;
 
 function preload(){
-  rainbows_data = loadBytes(rainbows_url);
-  cats_data = loadBytes(cats_url); 
-  trains_data = loadBytes(trains_url);  
+  for (model_name of Object.keys(models_urls)) {
+    const model_url = models_urls[model_name];
+    models[model_name] = {};
+    models[model_name].data_models = {};
+    models[model_name].data = loadBytes(model_url);
+  } 
 }
 
 function setup(){
@@ -35,19 +39,15 @@ function setup(){
   setupTrainingData();
   setupEvents();
   brain = new Brain(784, 64, 3);
-  epoch = 0;
   percent = testAll();
 }
 
 function setupTrainingData() {
-  all_training_data = all_training_data.concat(cats.training);
-  all_training_data = all_training_data.concat(trains.training);
-  all_training_data = all_training_data.concat(rainbows.training);
-  //let end_time = repeat_train(all_training_data, 1);
- 
-  all_testing_data = all_testing_data.concat(cats.testing);
-  all_testing_data = all_testing_data.concat(trains.testing);
-  all_testing_data = all_testing_data.concat(rainbows.testing);
+  for (let model_name of Object.keys(models)) {
+    const model = models[model_name];
+    all_training_data = all_training_data.concat(model.data_models.training);
+    all_testing_data = all_testing_data.concat(model.data_models.testing);
+  }
 }
 
 function setupEvents() {
@@ -61,6 +61,7 @@ function setupEvents() {
     percent = testAll();
     guess_txt.innerHTML = "Training complete !";
     console.log(epoch.toString()+") Training complete in",end_time,"ms"); 
+    console.log(percent);
   }
 
   test_btn.onclick = ()=>{
@@ -109,19 +110,6 @@ function mouseDragged(){
   drawing();
 }
 
-function mouseRealed() {
-  displayGuess();
-}
-
-function touchStarted() {
-  drawing();
-}
-
-function touchMoved() {
-  drawing();
-}
-
-
-function touchEnded() {
+function mouseReleased() {
   displayGuess();
 }
