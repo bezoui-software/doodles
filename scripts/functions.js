@@ -1,6 +1,4 @@
-function displayGuess() {
-  guess_txt.innerHTML = guess().html_txt;
-}
+const displayGuess = () => guess_txt.innerHTML = guess().html_txt;
 
 function prepareData(category, data, label){
   category.training = [];
@@ -19,9 +17,10 @@ function prepareData(category, data, label){
 }
 
 function prepareDatas() {
-  prepareData(cats, cats_data, indexs['cat']);
-  prepareData(trains, trains_data, indexs['train']);
-  prepareData(rainbows, rainbows_data, indexs['rainbow']);
+  console.log
+  for (let model_name of Object.keys(models)) {
+    prepareData(models[model_name].data_models, models[model_name].data, indexs[model_name]);    
+  }
 }
 
 function train(training){
@@ -33,6 +32,7 @@ function train(training){
     let input = training[i];
     inputs = input.map(x => x/255);
     var label = training[i].label;
+    
     var targets = [0, 0, 0];
     targets[label] = 1;
     
@@ -40,6 +40,7 @@ function train(training){
   }
   return Date.now() - start;
 }
+
 function repeat_train(training, repeat_time){
   var start = Date.now();
   for (let n=0;n<repeat_time;n++){
@@ -67,10 +68,11 @@ function test(testing){
 }
 
 function testAll(){
-  let all_testing_data = [];
-  all_testing_data = all_testing_data.concat(cats.testing);
-  all_testing_data = all_testing_data.concat(trains.testing);
-  all_testing_data = all_testing_data.concat(rainbows.testing);
+  all_testing_data = [];
+  for (let model_name of Object.keys(models)) {
+    const model = models[model_name];
+    all_testing_data = all_testing_data.concat(model.data_models.training);
+  }
   
   return test(all_testing_data);
 }
