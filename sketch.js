@@ -58,32 +58,17 @@ function setupEvents() {
   train_btn.onclick = ()=>{
     let end_time = train(all_training_data);
     epoch++;
-    percent = testAll();
     guess_txt.innerHTML = "Training complete !";
     console.log(epoch.toString()+") Training complete in",end_time,"ms"); 
-    console.log(percent);
   }
 
   test_btn.onclick = ()=>{
-    percent = test(all_testing_data);
-    percent *= 100;
-    guess_txt.innerHTML = "Success <orangebg>"+floor(percent)+"%</orangebg>";
-    console.log(percent+"%");
+    displayPercent();
   }
 
-  guess_btn.onclick = ()=>{ 
-    let data = guess();
+  guess_btn.onclick = displayGuess;
 
-    if (data.txt != undefined && data.html_txt != undefined){
-      guess_txt.innerHTML = data.html_txt;
-      speak(data.txt);
-    }
-  }
-
-  clear_btn.onclick = ()=>{
-    guess_txt.innerHTML = "...";
-    background(255);
-  }
+  clear_btn.onclick = clearAll;
 }
 
 function setupElements() {
@@ -93,6 +78,28 @@ function setupElements() {
   test_btn = document.getElementById("test");
   guess_btn = document.getElementById("guess");
   clear_btn = document.getElementById("clear");
+  setupDisplayModelsContainer();
+}
+
+function setupDisplayModelsContainer() {
+  const displayModelsContainer = document.createElement('div');
+  displayModelsContainer.id = 'display-models-container';
+  const label = document.createElement('label');
+  label.innerHTML = 'Display Models';
+  displayModelsContainer.appendChild(label);
+  const displayModels = document.createElement('div');
+  displayModels.id = 'display-models'; 
+  displayModels.classList.add('hide');
+  displayModelsContainer.appendChild(displayModels);
+  document.getElementById('control').appendChild(displayModelsContainer);
+  for (let model_name of Object.keys(models)) {
+    const model = models[model_name];
+    const displayModelButton = document.createElement('button');
+    displayModelButton.innerHTML = `Display ${model_name} models`;
+    displayModelButton.onclick = () => draw_doodles(model.data);
+    displayModels.appendChild(displayModelButton);
+  }
+  displayModelsContainer.onclick = () => displayModels.classList.toggle('hide');
 }
 
 function setupLabels() {
