@@ -1,4 +1,22 @@
-const displayGuess = () => guess_txt.innerHTML = guess().html_txt;
+function displayPercent() {
+  percent = test(all_testing_data);
+  percent *= 100;
+  guess_txt.innerHTML = "Success <orangebg>"+floor(percent)+"%</orangebg>";
+  console.log(percent+"%");
+}
+
+const displayGuess = () => {
+  if (guess().txt != undefined && guess().html_txt != undefined) guess_txt.innerHTML = guess().html_txt;
+}
+
+const clearDisplayedGuess = () => guess_txt.innerHTML = "...";
+
+const clearCanvas = () => background(255);
+
+function clearAll() {
+  clearDisplayedGuess();
+  clearCanvas();
+}
 
 function prepareData(category, data, label){
   category.training = [];
