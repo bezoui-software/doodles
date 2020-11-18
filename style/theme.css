@@ -1,0 +1,171 @@
+:root {
+  --bleu: #4F4FFF;
+  --orange: #FFDA36;
+
+  --control-button-height: 50px;
+  --control-gap: 10px;
+}
+
+* {
+  font-family: 'Patrick Hand SC', cursive;
+}
+
+body,
+header,
+footer {
+  margin: 0;
+  padding: 0;
+  background-color: #EFEFEF;
+  font-size: 30px;
+}
+
+header {
+  width: 100%;
+  margin: 5px;
+  margin-top: 0;
+  margin-bottom: auto;
+}
+
+header h1 {
+  margin: 0;
+}
+
+#main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#control {
+  order: 1;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+#control button, #display-models-container {
+  zoom: 0;
+  height: var(--control-button-height);
+  padding: 0 30px;
+  border-radius: 0;
+  outline: none;
+  border: 0;
+  cursor: pointer;
+  font-size: 20px;
+  background-color: var(--bleu);
+  color: white;
+  transition: 0.3s;
+  user-select: none;
+}
+
+#control button:hover {
+  zoom: 1.5;
+  box-shadow: 10px 10px 0 0px #7c7cff, 20px 20px 0 0px #c3c3ff;
+}
+
+#display-models-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--control-gap);
+  position: relative;
+  justify-content: center;
+  align-items: center;
+}
+
+#display-models-container label {
+  pointer-events: none;
+}
+
+#display-models-container #display-models {
+  display: flex;
+  flex-direction: column;
+  gap: var(--control-gap);
+  position: absolute;
+  top: calc(var(--control-button-height) + var(--control-gap));
+  left: 0;
+  width: max-content;
+}
+
+#display-models-container #display-models button {
+  text-align: left;
+}
+
+#display-models-container #display-models button:hover {
+  box-shadow: none;
+  zoom: 1;
+  filter: brightness(0.9);
+}
+
+.hide {
+  display: none !important;
+}
+
+#canvas {
+  order: -1;
+  box-shadow: 15px 15px 0px #9797ff;
+  margin: 50px 0;
+  margin-top: 25px;
+}
+
+#guess-text {
+  position: absolute;
+  bottom: 5px;
+  top: auto;
+  font-weight: 100;
+  user-select: none;
+  width: fit-content;
+  text-align: center;
+}
+
+orangebg {
+  background-color: var(--orange);
+  color: white;
+  padding: 0 10px;
+}
+
+blue {
+  color: var(--bleu);
+}
+
+@media only screen and (max-width: 736px) {
+  :root {
+    --control-gap: 1px;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+  }
+
+  #control {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    gap: var(--control-gap);
+  }
+
+  #control button {
+    width: 100%;
+    margin: 2px 0;
+  }
+
+  #control button:hover {
+    zoom: 1;
+    box-shadow: 0 0, 0 0;
+  }
+
+  #guess-text {
+    position: absolute;
+    bottom: auto;
+    top: 130px;
+    font-size: 20px;
+  }
+
+  #display-models-container #display-models {
+    gap: var(--control-gap);
+    top: calc(var(--control-button-height) + var(--control-gap));
+  }
+}
